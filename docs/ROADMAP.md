@@ -9,8 +9,7 @@ Not a password hasher, store or checker: callers own how a phrase is stored and 
 Areas: `area:generator` (lists, shapes, library, command), `area:repo` (docs, CI, releases, settings). Every open issue carries one.
 
 ## Now
-<!-- Outcomes, not tasks: - **<what will be true>** (<area>): one sentence. #n, #m
-     Small issues need no outcome of their own; their area label is enough. -->
+- **Sentence passphrases installable at v0.1.0** (generator): the library, the command and the public-repo basics. #1, #2
 
 ## Next
 
