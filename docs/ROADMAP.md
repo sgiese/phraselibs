@@ -1,9 +1,9 @@
-# passlibs roadmap
+# phraselibs roadmap
 
-## What passlibs is
+## What phraselibs is
 A library and command that make passphrases shaped like little sentences, "adventurous aardvark gracefully juggling teapots", from small hand-curated word lists, 2 to 5 words long.
 
-## What passlibs isn't
+## What phraselibs isn't
 Not a password hasher, store or checker: callers own how a phrase is stored and verified. No big dictionaries, no other languages.
 
 Areas: `area:generator` (lists, shapes, library, command), `area:repo` (docs, CI, releases, settings). Every open issue carries one.

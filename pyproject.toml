@@ -1,5 +1,5 @@
 [project]
-name = "passlibs"
+name = "phraselibs"
 version = "0.1.0"
 description = "Sentence-shaped passphrases, Mad Libs style: easy to read aloud and type on a phone."
 readme = "README.md"
@@ -12,7 +12,7 @@ license-files = ["LICENSE"]
 dependencies = []
 
 [project.scripts]
-passlibs = "passlibs:main"
+phraselibs = "phraselibs:main"
 
 [build-system]
 requires = ["uv_build>=0.12.9,<0.13.0"]

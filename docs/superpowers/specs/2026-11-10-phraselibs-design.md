@@ -1,4 +1,4 @@
-# passlibs: sentence-shaped passphrases
+# phraselibs: sentence-shaped passphrases
 
 ## Why
 
@@ -24,7 +24,7 @@ generator moves here, as a small public library both can depend on instead of tw
 ## Non-goals
 
 - **No hashing, verifying, sessions or lockout.** Callers own how a phrase is stored and
-  checked; passlibs only makes phrases.
+  checked; phraselibs only makes phrases.
 - **No normalizing.** Phrases come out lowercase with single spaces. A caller that wants to
   accept "Lazy Otter" for "lazy otter" lowercases on its side.
 - No other languages, no WordNet or other big dictionaries: the lists are small on purpose
@@ -43,7 +43,7 @@ generator moves here, as a small public library both can depend on instead of tw
 
 Five lists: ADJECTIVES (376), SUBJECTS (280), ADVERBS (187), VERBS_ING (262, all transitive),
 OBJECTS (284), carried over unchanged. They're plain data, one word per line, a text file per
-list inside the package (for example `passlibs/words/adjectives.txt`), so a program in
+list inside the package (for example `phraselibs/words/adjectives.txt`), so a program in
 another language can read them too. The package loads them with `importlib.resources`.
 
 Rules, pinned by tests: every word is lowercase a–z only; no duplicates within a list;
@@ -70,7 +70,7 @@ nothing; the strength comes from the random choice.
 
 ### The library
 
-    from passlibs import generate, entropy_bits
+    from phraselibs import generate, entropy_bits
     generate()           # 5 words, one of the two 5-word shapes
     generate(words=3)    # 2..5; anything else raises ValueError
     entropy_bits(5)      # float, ~41.4
@@ -80,17 +80,17 @@ a list change that would weaken the default can't slip through.
 
 ### The command
 
-    passlibs                 # one 5-word phrase on stdout
-    passlibs --words 3       # 2..5
-    passlibs --bits          # also the bit count, on stderr
+    phraselibs                 # one 5-word phrase on stdout
+    phraselibs --words 3       # 2..5
+    phraselibs --bits          # also the bit count, on stderr
 
 Only the phrase goes to stdout, with a newline, so scripts can capture it. argparse, no
 dependencies.
 
 ## The public-repo basics
 
-- README: what it is, an example, install (`uv add "passlibs @ git+https://github.com/sgiese/passlibs@v0.1.0"`,
-  `uvx --from git+https://github.com/sgiese/passlibs@v0.1.0 passlibs`), the bits table, the
+- README: what it is, an example, install (`uv add "phraselibs @ git+https://github.com/sgiese/phraselibs@v0.1.0"`,
+  `uvx --from git+https://github.com/sgiese/phraselibs@v0.1.0 phraselibs`), the bits table, the
   security notes above, license.
 - LICENSE (MIT), SECURITY.md (report privately through GitHub's private vulnerability
   reporting), CONTRIBUTING.md (short: issue first, tests and lint pass, what changes to the
