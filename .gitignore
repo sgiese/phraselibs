@@ -1,0 +1,11 @@
+
+# Tooling caches and local state
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+.env
+.worktrees/
+__pycache__/
+.venv/
