@@ -1,6 +1,6 @@
 # passlibs
 
-<One sentence: what this is and who it is for.>
+A small public Python library and command that generate sentence-shaped passphrases (Mad Libs style) for people who read them aloud or type them on a phone. Public repo: keep personal details, home infrastructure and other projects' internals out of commits, issues and docs. The design is `docs/superpowers/specs/2026-11-10-passlibs-design.md`.
 
 ## Working here
 - Simple over clever. Prefer the obvious solution; no abstractions for cases that do not exist yet.

@@ -1,12 +1,12 @@
 # passlibs roadmap
 
 ## What passlibs is
-<!-- A short paragraph on what the project is for. -->
+A library and command that make passphrases shaped like little sentences, "adventurous aardvark gracefully juggling teapots", from small hand-curated word lists, 2 to 5 words long.
 
 ## What passlibs isn't
-<!-- A short paragraph on what it deliberately does not do (and, where it applies, which repo does). -->
+Not a password hasher, store or checker: callers own how a phrase is stored and verified. No big dictionaries, no other languages.
 
-Areas: `area:<name>`, `area:<name>`, `area:<name>`. Every open issue carries one.
+Areas: `area:generator` (lists, shapes, library, command), `area:repo` (docs, CI, releases, settings). Every open issue carries one.
 
 ## Now
 <!-- Outcomes, not tasks: - **<what will be true>** (<area>): one sentence. #n, #m

@@ -1,12 +1,14 @@
 [project]
 name = "passlibs"
 version = "0.1.0"
-description = "Add your description here"
+description = "Sentence-shaped passphrases, Mad Libs style: easy to read aloud and type on a phone."
 readme = "README.md"
 authors = [
-    { name = "Scott Giese", email = "scott.giese@graymatterlabs.com" }
+    { name = "Scott Giese", email = "580239+sgiese@users.noreply.github.com" }
 ]
 requires-python = ">=3.11"
+license = "MIT"
+license-files = ["LICENSE"]
 dependencies = []
 
 [project.scripts]
