@@ -19,4 +19,4 @@ Areas: `area:generator` (lists, shapes, library, command), `area:repo` (docs, CI
 <!-- Newest month first: **YYYY-MM**, then one short entry per finished outcome with its issue/PR links.
      An outcome moves here when its last issue closes. -->
 
-Updated by the session that files or closes an issue; `gml repos` flags drift.
+Kept current in the pull requests that file or close an outcome's issues.
