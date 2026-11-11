@@ -60,12 +60,26 @@ are log2 of how many phrases the length can make.
 
 - **The word lists are public, and the bits assume an attacker has them.** The strength comes
   from choosing at random (Python's `secrets`), not from a secret dictionary.
-- **Pick the length for where the phrase will be checked.** Behind a sign-in that locks out
-  after a few wrong tries, even 2 or 3 words hold up. If a password hash could ever leak and
-  be attacked offline, keep the default 5 words, and use a slow hash such as Argon2id.
+- **Pick the length for where the phrase will be checked.** Behind a sign-in that locks an
+  account after a few wrong tries, 3 or 4 words hold up; 2 words (about 370,000 phrases) only
+  if the lockout is long. If a password hash could ever leak and be attacked offline, keep the
+  default 5 words.
+- **Hash with a slow hash and a salt.** 42.4 bits is about 6 trillion phrases: years of GPU
+  time against Argon2id or PBKDF2-SHA256 at 600,000 or more iterations, weeks against a fast or
+  lightly iterated hash. Use a unique random salt per hash.
+- **Compare the exact phrase, in order.** Don't accept the
+  words in any order: at 5 words, 2 of the bits come from which shape, and so which order, was
+  picked.
 - **phraselibs only makes phrases.** Hashing, storing and checking them is up to you.
   Phrases are lowercase with single spaces; if you want to accept "Lazy Otter" for
   "lazy otter", lowercase and collapse spaces before hashing and before comparing.
+- **Pin a release to its commit if you generate real passwords with it.** Release tags are
+  protected, but a commit hash can't be moved at all. Each release's notes give its commit;
+  v0.1.0 is `6bd2115c51dd57611cbd129b22492f7256a6f65a`:
+
+      uv add "phraselibs @ git+https://github.com/sgiese/phraselibs@6bd2115c51dd57611cbd129b22492f7256a6f65a"
+
+  With `uv add ...@v0.1.0`, `uv.lock` records the commit too; check it matches.
 
 Found a security problem? Please report it privately through this repository's
 **Security** tab, not in a public issue.
