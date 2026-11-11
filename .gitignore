@@ -6,6 +6,5 @@
 .coverage
 htmlcov/
 .env
-.worktrees/
 __pycache__/
 .venv/
