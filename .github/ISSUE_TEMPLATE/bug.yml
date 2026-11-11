@@ -1,0 +1,28 @@
+name: Bug report
+description: Something doesn't work as documented
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: >
+        Security problem? Please don't file it here; report it privately through the
+        **Security** tab instead. And please never paste a passphrase you actually use.
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened, and what you expected
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: How to reproduce
+      description: The command or code you ran.
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: phraselibs version or tag, and Python version
+    validations:
+      required: true
