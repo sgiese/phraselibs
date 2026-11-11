@@ -16,8 +16,9 @@ generator moves here, as a small public library both can depend on instead of tw
 - A public, MIT-licensed Python library and command that generate sentence-shaped
   passphrases from hand-curated word lists.
 - **A length flag, 2 to 5 words.** 5 is the default.
-- The 5-word output is exactly what the original generator produces today (same lists, same
-  two sentence shapes), so moving it here changes nothing for the first user.
+- The 5-word output uses the original generator's lists and keeps its two sentence shapes,
+  plus two more (owner's decision, 2026-11-10): still five words, still above the first
+  user's 40-bit floor, and existing passphrases are unaffected.
 - A repo a stranger can pick up: clear README, license, security policy, contributing notes,
   CI, tagged releases with notes.
 
@@ -33,7 +34,7 @@ generator moves here, as a small public library both can depend on instead of tw
 
 ## Anti-goals
 
-- A shorter phrase must never become the default. Two words are about 17 bits: fine behind a
+- A shorter phrase must never become the default. Two words are about 18 bits: fine behind a
   sign-in with lockout, weak against an offline attack on a leaked hash.
 - No weak randomness anywhere: every choice uses `secrets`.
 
@@ -47,35 +48,38 @@ list inside the package (for example `phraselibs/words/adjectives.txt`), so a pr
 another language can read them too. The package loads them with `importlib.resources`.
 
 Rules, pinned by tests: every word is lowercase a–z only; no duplicates within a list;
-ADJECTIVES and SUBJECTS are disjoint, which keeps the two 5-word shapes tell-apart-able and so
-the extra template bit real.
+no word is in two lists, so a phrase shows which shape made it and every shape adds phrases
+no other shape makes.
 
 ### Shapes by length
 
 Every shape uses each list at most once.
 
-| Words | Shape(s) | Example | Bits (approx.) |
+| Words | Shapes | Example | Bits (approx.) |
 |---|---|---|---|
-| 2 | adjective subject | lazy otter | 16.7 |
-| 3 | subject verb object | otter juggling teapots | 24.3 |
-| 4 | adjective subject verb object | lazy otter juggling teapots | 32.9 |
-| 5 | adjective subject adverb verb object; subject adverb verb adjective object | adventurous aardvark gracefully juggling teapots | 41.4 |
+| 2 | adjective subject; adjective object; verb object; verb subject | lazy otter, juggling teapots | 18.5 |
+| 3 | subject verb object; verb adjective object; adverb verb object; adverb verb subject | otter juggling teapots, gracefully juggling otter | 26.2 |
+| 4 | adjective subject verb object; subject adverb verb object; subject verb adjective object; adverb verb adjective object; adverb verb adjective subject | lazy otter juggling teapots, gracefully juggling lazy otter | 34.8 |
+| 5 | adjective subject adverb verb object; subject adverb verb adjective object; adjective subject verb object adverb; subject verb adjective object adverb | adventurous aardvark gracefully juggling teapots, otter juggling purple teapots gracefully | 42.4 |
 
-Shorter shapes drop the adverb first, since it's the smallest list, and each still reads as
-something a person would say.
+Each shape reads as something a person would say (owner's choice of shapes, 2026-11-10).
+Shapes that end on a verb are left out, since every verb takes an object, and so are shapes
+that use a list twice.
 
-Bits are `log2(number of shapes) + sum(log2(len(list)))` for that length: the strength
+A shape is picked in proportion to how many phrases it makes, so every phrase of a length
+is equally likely. Bits are `log2(sum over the shapes of the product of their list sizes)`
+for that length: the strength
 against an attacker who has these lists, which are public. The lists being public costs
 nothing; the strength comes from the random choice.
 
 ### The library
 
     from phraselibs import generate, entropy_bits
-    generate()           # 5 words, one of the two 5-word shapes
+    generate()           # 5 words, one of the four 5-word shapes
     generate(words=3)    # 2..5; anything else raises ValueError
-    entropy_bits(5)      # float, ~41.4
+    entropy_bits(5)      # float, ~42.4
 
-Standard library only. Python >= 3.11. Tests pin `entropy_bits(5)` to 41.4 (one decimal) so
+Standard library only. Python >= 3.11. Tests pin `entropy_bits(5)` to 42.4 (one decimal) so
 a list change that would weaken the default can't slip through.
 
 ### The command

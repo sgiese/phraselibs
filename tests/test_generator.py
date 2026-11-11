@@ -1,3 +1,4 @@
+import math
 import re
 from collections.abc import Callable
 from typing import Any
@@ -38,10 +39,30 @@ def test_words_come_from_the_shape_lists(n: int) -> None:
         ), words
 
 
-def test_both_five_word_shapes_appear() -> None:
-    firsts = [generate().split(" ")[0] for _ in range(200)]
-    assert any(w in load("adjective") for w in firsts)
-    assert any(w in load("subject") for w in firsts)
+def _shape_of(phrase: str) -> tuple[str, ...]:
+    """The lists are disjoint, so each word names the list it came from."""
+    return tuple(next(p for p in PARTS if w in load(p)) for w in phrase.split(" "))
+
+
+def test_shapes() -> None:
+    a, s, d, v, o = "adjective", "subject", "adverb", "verb", "object"
+    assert SHAPES == {
+        2: ((a, s), (a, o), (v, o), (v, s)),
+        3: ((s, v, o), (v, a, o), (d, v, o), (d, v, s)),
+        4: ((a, s, v, o), (s, d, v, o), (s, v, a, o), (d, v, a, o), (d, v, a, s)),
+        5: ((a, s, d, v, o), (s, d, v, a, o), (a, s, v, o, d), (s, v, a, o, d)),
+    }
+
+
+@pytest.mark.parametrize("n", LENGTHS)
+def test_every_shape_appears(n: int) -> None:
+    seen = {_shape_of(generate(words=n)) for _ in range(500)}
+    assert seen == set(SHAPES[n])
+
+
+@pytest.mark.parametrize("n", LENGTHS)
+def test_shapes_of_one_length_are_distinct(n: int) -> None:
+    assert len(set(SHAPES[n])) == len(SHAPES[n])
 
 
 def test_every_shape_uses_each_list_at_most_once() -> None:
@@ -67,11 +88,35 @@ def test_non_int_raises(fn: Callable[..., Any], bad: object) -> None:
 
 def test_entropy_table() -> None:
     assert {n: round(entropy_bits(n), 1) for n in LENGTHS} == {
-        2: 16.7,
-        3: 24.3,
-        4: 32.9,
-        5: 41.4,
+        2: 18.5,
+        3: 26.2,
+        4: 34.8,
+        5: 42.4,
     }
+
+
+def _phrases(shape: tuple[str, ...]) -> int:
+    return math.prod(len(load(part)) for part in shape)
+
+
+@pytest.mark.parametrize("n", LENGTHS)
+def test_entropy_counts_every_phrase_of_every_shape(n: int) -> None:
+    assert entropy_bits(n) == pytest.approx(math.log2(sum(map(_phrases, SHAPES[n]))))
+
+
+def test_shape_is_picked_in_proportion_to_its_phrases(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Every phrase of a length is equally likely, so no shape is an easier guess."""
+    calls: list[int] = []
+    first, second = SHAPES[2][0], SHAPES[2][1]
+
+    def randbelow(n: int) -> int:
+        calls.append(n)
+        return _phrases(first) if len(calls) == 1 else 0
+
+    monkeypatch.setattr(generator.secrets, "randbelow", randbelow)
+    phrase = generate(words=2)
+    assert calls[0] == sum(map(_phrases, SHAPES[2]))
+    assert _shape_of(phrase) == second
 
 
 def test_uses_secrets(monkeypatch: pytest.MonkeyPatch) -> None:

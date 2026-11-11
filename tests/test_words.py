@@ -1,3 +1,4 @@
+import itertools
 import re
 
 import pytest
@@ -25,10 +26,11 @@ def test_no_duplicates_within_a_list(part: str) -> None:
     assert len(set(load(part))) == len(load(part))
 
 
-def test_adjectives_and_subjects_are_disjoint() -> None:
-    """The two 5-word shapes differ only in whether they open with an adjective or a subject,
-    so this is what makes the extra shape bit real."""
-    assert set(load("adjective")).isdisjoint(load("subject"))
+def test_lists_are_disjoint() -> None:
+    """No word is in two lists, so a phrase shows which shape made it and every shape adds
+    phrases no other shape makes; entropy_bits counts on that."""
+    for a, b in itertools.combinations(PARTS, 2):
+        assert set(load(a)).isdisjoint(load(b)), (a, b)
 
 
 def test_unknown_part_raises() -> None:

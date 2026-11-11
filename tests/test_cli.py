@@ -17,7 +17,7 @@ def test_words_flag(n: int, capsys: pytest.CaptureFixture[str]) -> None:
     assert len(capsys.readouterr().out.split()) == n
 
 
-@pytest.mark.parametrize(("args", "bits"), [([], "41.4"), (["--words", "2"], "16.7")])
+@pytest.mark.parametrize(("args", "bits"), [([], "42.4"), (["--words", "2"], "18.5")])
 def test_bits_goes_to_stderr(
     args: list[str], bits: str, capsys: pytest.CaptureFixture[str]
 ) -> None:

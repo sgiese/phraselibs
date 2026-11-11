@@ -29,7 +29,7 @@ from phraselibs import generate, entropy_bits
 
 generate()  # 'adventurous aardvark gracefully juggling teapots'
 generate(words=3)  # 'otter juggling teapots'
-entropy_bits(5)  # 41.4...
+entropy_bits(5)  # 42.4...
 ```
 
 ```console
@@ -37,7 +37,7 @@ $ phraselibs
 rascally minstrel crocheting hoops
 $ phraselibs --words 3 --bits
 toad threading hammocks
-24.3 bits
+26.2 bits
 ```
 
 `--words` takes 2 to 5 (default 5). The phrase alone goes to stdout, so scripts can capture
@@ -45,12 +45,16 @@ it; `--bits` writes the strength to stderr.
 
 ## Lengths
 
-| Words | Shape | Example | Bits |
+| Words | Shapes | Example | Bits |
 |---|---|---|---|
-| 2 | adjective subject | lazy otter | 16.7 |
-| 3 | subject verb object | otter juggling teapots | 24.3 |
-| 4 | adjective subject verb object | lazy otter juggling teapots | 32.9 |
-| 5 | adjective subject adverb verb object, or subject adverb verb adjective object | adventurous aardvark gracefully juggling teapots | 41.4 |
+| 2 | adjective subject; adjective object; verb object; verb subject | lazy otter, juggling teapots | 18.5 |
+| 3 | subject verb object; verb adjective object; adverb verb object; adverb verb subject | otter juggling teapots, gracefully juggling otter | 26.2 |
+| 4 | adjective subject verb object; subject adverb verb object; subject verb adjective object; adverb verb adjective object; adverb verb adjective subject | lazy otter juggling teapots, gracefully juggling lazy otter | 34.8 |
+| 5 | adjective subject adverb verb object; subject adverb verb adjective object; adjective subject verb object adverb; subject verb adjective object adverb | adventurous aardvark gracefully juggling teapots, otter juggling purple teapots gracefully | 42.4 |
+
+A shape is picked in proportion to how many phrases it makes, so every phrase of a length is
+equally likely. No word is in two lists, so no two shapes make the same phrase, and the bits
+are log2 of how many phrases the length can make.
 
 ## Security notes
 
