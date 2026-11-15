@@ -12,11 +12,11 @@ A small public Python library and command that generate sentence-shaped passphra
 
 ## Workflow
 Every change, fixes and docs included, follows this path. Nothing is pushed straight to `main`.
-1. **Issue first.** Work starts as a GitHub issue (`gh issue create`) whose body ends with a "Done when" checklist of observable outcomes. Pick it up by assigning yourself (`gh issue edit <n> --add-assignee @me`). An issue labelled `decision` is a design question, not an implementation task: brainstorm it with the maintainer first (a brainstorming prompt or slash command in Claude Code works well), record the chosen direction in the issue, and file implementation issues before writing any code.
-2. **Branch per issue.** `git switch -c issue-<n>-<short-slug> origin/main`, never work on `main`.
+1. **Issue first.** Work starts as a GitHub issue with a "Done when" list (`gml issue create`). Pick it up by assigning yourself. An issue labelled `decision` (created with `gml issue create --brainstorm`) is a design question, not an implementation task: brainstorm with the owner and record the chosen direction in the issue, plus implementation issues, before writing any code.
+2. **Branch in a worktree.** `gml issue start <n>`: branch `issue-<n>-<short-slug>` in a git worktree under `.worktrees/`, never on `main`.
 3. **Commits reference the issue.** `#<n>` in the body; the final commit says `Closes #<n>`. One concern per PR; keep it small.
 4. **Pull request for review.** When tests and lint pass, `gh pr create`: a summary, the evidence (test and lint output, anything checked by hand), and `Closes #<n>` if this PR finishes the issue, `Refs #<n>` if it does not (a plan for review, a first half). Never Closes, Fixes or Resolves in a PR that is not the last: GitHub acts on them anywhere in the body. Open the PR and stop.
-5. **Review, then merge.** The maintainer reviews and merges, or says so; Claude merges only when told to (`gh pr merge <n> --squash --delete-branch`).
+5. **Review, then merge.** Label the review the PR needs (`review:none`, `review:code`, `review:security`) and run `gml issue resolve <n>`: it runs the tests, says what review is missing, and merges by rule when everything passes. A fresh agent reviews (`/code-review`, `/security-review`) and posts with `gml issue review`; fix and resolve its threads, never a `needs-you` one, which is the maintainer's. `gml issue cleanup <n>` is the command after a merge in the UI.
 
 ## Commands
 - Setup: `uv sync`
